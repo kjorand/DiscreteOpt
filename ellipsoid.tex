@@ -347,7 +347,135 @@ The ellipsoid method is now easily described.
 \end{proof}
 
 
-\subsection{The separation problem}
+
+\section{Deciding feasibility}
+\label{sec:deciding-feasibility}
+Suppose that we have to decide the feasibility of $P = \{x ∈  ℝ^n : Ax ≤ b\}$
+using the ellipsoid method described above. Here $A ∈ ℤ^{m ×n}$
+and $b ∈ ℤ^{m}$.
+In the following $B$
+is an upper bound on the absolute values of the components of $A$
+and $b$.
+
+To apply the ellipsoid method we have to take care of the following items: 
+\begin{enumerate}[i)]
+\item We have to find a starting ball that contains a subset of the feasible region. \label{item:4}
+\item We have to deal with the fact that $P$ might not be full dimensional even if it is feasible.  \label{item:7}
+\item We have to bound the volume $P$ from below, if $P$ is full dimensional. \label{item:8}
+\end{enumerate}
+
+
+We first deal with the issue~\ref{item:4}). 
+Suppose that there exists a feasible point $x^*$ and consider the index sets 
+$I = \{ i : x^*_i ≥0 \}$ and $J = \{j : x^*_j ≥0\}$.    The polyhedron 
+\begin{displaymath}
+P' =   \{ x ∈ ℝ^n : Ax ≤b, x_i ≥ 0, i ∈ I, \, x_j ≤ 0, j ∈ J\}
+\end{displaymath}
+is contained in $P$ and it has vertices. Clearly $P'$ is described by a system of inequalities $Cx≤d$ where each component of $C$ and $d$ is bounded by $B$ in absolute value. 
+
+A vertex $v^*$ of $P'$ is of the form $v^* = C_B^{-1} b_B$ for a basis $B$ of $C$. Since $C_B^{-1} = \widetilde{C_B} / \det(C_B)$ where $\widetilde{C_B} \in ℤ^{n ×n}$ is the adjoint of $C_B$. Each component of $\widetilde{C_B}$ is, by the Hadamard bound, bounded by $B^n ⋅ n^{n/2}$.  It follows that $\|v^*\|_∞$ is bounded by 
+ $n^{n/2+1} ⋅ B^{n+1}$. We can thus conclude that $P$ is infeasible if and only if 
+ \begin{displaymath}
+   P ∩ \{ x ∈ ℝ^n : \|x\|_∞ ≤ n^{n/2+1} ⋅ B^{n+1} \}
+ \end{displaymath}
+is infeasible. 
+For this polyhedron, we have a starting ellipsoid which is the ball of radius $n^{n/2+1} ⋅ B^{n+1} $ around $0$.  
+
+
+Next, we deal with the issue~\ref{item:7}). 
+\begin{exercise}
+  \label{el:ex:11}
+  Let $P = \{ x \in \setR^n \mid Ax\leq b\}$ be a polyhedron and $\varepsilon>0$ be a
+  real number. Show that $P_\varepsilon = \{ x \in \setR^n \mid Ax\leq b+ \varepsilon\cdot
+  \mathbf{1}\}$ is full-dimensional if $P \neq \emptyset$.
+\end{exercise}
+
+
+The above exercise raises the following question.  Is there an $\varepsilon>0$
+such that $P_\varepsilon = \emptyset$ if and only if $P = \emptyset$ and furthermore is the
+binary encoding length of this $\varepsilon$ polynomial in the binary encoding
+length of $A$ and $b$? 
+
+We recall the Farkas' lemma (Theorem~\ref{thr:7}). 
+\begin{theorem}
+  \label{el:thr:24}
+  The system $Ax\leq b$ does not have a solution if and only if there
+  exists a nonnegative vector $\lambda \in \setR^m_{\geq0}$ such that $\lambda^TA = 0$
+  and $\lambda^Tb=-1$. 
+\end{theorem}
+
+
+%Again, suppose  $A\in \setZ^{m\times n}$ and $b\in \setZ^m$ and let $B$ be the largest absolute
+%value of a coefficient of $A$ and $b$.  If $Ax\leq b$ is not feasible,
+%then there exists a $\lambda\geq0$ such that $\lambda^T(A|b) = (\mathbf{0}|-1)$. 
+If $Ax ≤b$ is infeasible, then the polyhedron 
+\begin{displaymath}
+  \{ λ ∈ ℝ^m : λ^TA = 0, \, λ^T b = -1 , \, λ ≥0 \} 
+\end{displaymath}
+has vertices. As we have argued before, there exists a vertex $λ^*$ of $P$ such that $\|λ^*\| ≤ n^{n/2+1} ⋅  B^{n+1}  $. 
+
+Now let $\varepsilon =  (2 ⋅ m ⋅ n^{n/2+1} ⋅ B^{n+1})^{-1}$. Then $|{λ^*}^T \mathbf{1} \cdot \varepsilon |<1$ and thus 
+\begin{equation}
+  \label{el:eq:42}
+  \lambda^T (b+ \varepsilon \cdot \mathbf{1}) <0. 
+\end{equation}
+%
+Consequently the system $Ax\leq b+\varepsilon \cdot \mathbf{1}$ 
+is infeasible if and only
+if $Ax\leq b$ is infeasible. Furthermore, if $Ax\leq b+\varepsilon \cdot \mathbf{1}$  is feasible, then the polyhedron described by this set of inequalities is full-dimensional. 
+Notice again that the encoding length of
+$\varepsilon$ is polynomial in the encoding length of $Ax\leq b$.  % and we conclude
+% with the main theorem of this section. 
+
+% This discussion is summarized in the following lemma. 
+
+% \begin{lemma}
+%   \label{lem:2}
+%   Let $A ∈ ℤ^{m ×n}$ and $b ∈ ℤ^m$ and let $B$ be an upper bound on the absolute value of the entries of $A$ and $b$ and let $K = (2 ⋅ m ⋅ n^{n/2+1} ⋅ B^{n+1})$. 
+% Then $Ax ≤ b $ is feasible if and only of $ K ⋅ A x ≤ K ⋅ b + \mathbf{1}$ is feasible. The binary encoding length of $ K ⋅ A x ≤ K ⋅ b + \mathbf{1}$ is polynomial in the binary encoding length of $Ax ≤b$. 
+% \end{lemma}
+
+Next we deal with issue~\ref{item:8}.  We ask ourselves the following question. If $P = \{x ∈ ℝ^n : Ax ≤b\}$ is full-dimensional and bounded, what is a lower bound on $\vol(P)$? 
+
+If $P$ is full-dimensional, then $P$ contains $n+1$ affinely independent vertices $v_1,\dots,v_{n+1}$, see Exercise~\ref{exercise:3}.  Each of these vertices is of the form $v_i = v_i'/q_i$, where $v_i' ∈ ℤ^n$ and $q_i$ is a $n×n$-sub-determinant of $A$. Consequently 
+\begin{eqnarray*}
+  \vol(P) & ≥ & (1/  ∏_{i=1}^{n+1} q_i) ⋅ \vol(\conv(v'_1,\dots,v'_{n+1})) \\
+          & ≥ & (B^{n}⋅ n^{n/2} )^{-n}⋅ 1/n!,
+\end{eqnarray*}where the last inequality follows from the Hadamard bound and Exercise~\ref{exercise:1} and Exercise~\ref{exercise:2}. 
+A crude bound on $\vol(P)$ is thus $\vol(P) ≥ 1 / (B^{n^2} ⋅ n^{2⋅n^2})$. 
+
+
+We can conclude with the following theorem. 
+
+\begin{theorem}
+  \label{thr:11}
+  Let $Ax ≤ b$ be a system of linear inequalities with $A∈ℤ^{m×n}$ and $b∈ℤ^{m}$. Let $B$ be an upper bound on the absolute value of the entries of $A$ and $b$. The ellipsoid medthod can decide in time polynomial in $n,m$ and $\log B$ whether $Ax ≤ b$ is feasible. 
+\end{theorem}
+
+
+The next theorem follows from binary search. Its proof is an exercise. 
+
+
+
+\begin{theorem}
+\label{thr:12}
+Let $\max\{c^Tx : x ∈ ℝ^n, \, Ax ≤b\}$ be a linear program with $A ∈ ℤ^{m×n}$, $b ∈ ℤ^{m}$, $c ∈ Ζ^{n}$.  Let $B$ be an upper bound on the absolute value of the entries of $A$ and $b$. The ellipsoid method finds an optimal solution of the linear program if one exists in time polynomial in $n,m$ and $\log B$. 
+  Let $Ax ≤ b$ be a system of linear inequalities with $A∈ℤ^{m×n}$ and $b∈ℤ^{m}$. Let $B$ be an upper bound on the absolute value of the entries of $A$ and $b$. The ellipsoid can decide in time polynomial in $n,m$ and $\log B$ whether $Ax ≤ b$ is feasible. 
+\end{theorem}
+
+
+\subsection*{Exercises} 
+
+\begin{enumerate}
+\item Show the following. If $P⊆ℝ^n$ is a bounded and full-dimensional polyhedron, then there exist vertices $v_1,\dots,v_{n+1}$ of $P$ that are affinely independent, i.e., $v_2-v_1, v_3-v_1, \dots, v_{n+1}-v_1$ are linearly independent. \emph{Hint: If $a^Tx = β$ is some hyperplane, where $a ∈ ℝ^n \setminus \{0\}$, then there exists a vertex of $P$ that is not contained in that hyperplane.}\label{exercise:3}
+\item Show that $\vol(\conv(0,e_1,\dots,e_n)) = 1/n!$ \label{exercise:1}
+\item Let $a_1,\dots,a_n ∈ℤ^n$ be linearly independent. Show that
+  \begin{displaymath}
+    \vol(\conv(0,a_1,\dots,a_n)) = |\det(a_1,\dots,a_n)| /n!. 
+  \end{displaymath} \label{exercise:2}
+\end{enumerate}
+
+\section{The separation problem}
 \label{el:sec:separation-problem}
 
 At this point we can already notice a very important fact. Inspect
@@ -430,247 +558,198 @@ spanning tree w.r.t. the edge costs.
   \emph{Ignore the occurring rounding errors!} 
 \end{exercise}
 
-\section{How to start and when to stop}
-\label{el:sec:how-start-when-1}
+% \section{How to start and when to stop }
+% \label{el:sec:how-start-when-1}
 
-In our description of the ellipsoid method, we did not explain yet what
-the initial ellipsoid  is and when we can stop with asserting
-that $P$ is either not full-dimensional or unbounded. 
-
-Suppose therefore that $P = \{ x \in \setR^n \mid Ax\leq b\}$ is
-full-dimensional and bounded with $A\in \setZ^{m\times n}$ and $b\in \setZ^m$. Let
-$B$ be the largest absolute value of a component of $A$ and $b$. In this 
-section we will show the following things.  
-\begin{enumerate}[i)]
-\item The vertices of $P$ are in the box 
-$\{x \in \setR^n \mid -n^{n/2} B^n \leq x_i \leq n^{n/2} B^n$ 
-$\forall 1 \leq i \leq n \}$. 
-Thus $P$ is contained in the ball around $0$
-  with radius $n^{n} B^n$ . Observe that the encoding length of this
-  radius is $\size(n^{n}B^n) = O(n \log n + n\size(B))$ which is
-  polynomial in the dimension $n$ and the largest encoding length of a
-  coefficient of $A$ and $b$. \label{el:item:7}
-\item The volume of $P$ is bounded from below by  $1 /
-(n\cdot B)^{3n^2}$. \label{el:item:8}
-\end{enumerate}
-
-The following lemma is proved in any linear algebra course. 
-\begin{lemma}[Inverse formula and Cramer's rule]
-  \label{el:lem:11}
-  Let $C \in \setR^{n\times n}$ be a nonsingular matrix. Then 
-  \begin{displaymath}
-    C^{-1}(j,i) = (-1)^{i+j} \det(C_{ij}) / \det(C),
-  \end{displaymath}
-  where $C_{ij}$ is the matrix arising from $C$ by the deletion of the
-  $i^{th}$ row and $j^{th}$ column. If $d\in \setR^n$ is a vector 
-  then the $j^{th}$ component of $C^{-1}d$ is given by
-  $\det(\wt{C})/\det(C)$, where $\wt{C}$ arises from $C$ be 
-  replacing the $j^{th}$ column with $d$. 
- \end{lemma}
-
-We now define the size of a rational number $r = p/q$ with $p$ and $q$
-relatively prime integers, a vector $c \in \setQ^n$ and a matrix $A \in
-\setQ^{m\times n}$: 
-\begin{itemize}
-\item $\size(r) = 1 + \lceil\log ( |p|+1) \rceil + \lceil \log( |q|+1) \rceil$
-\item $\size(c) = n+ \sum_{i=1}^n \size(c_i)$
-\item $\size(A) = m\cdot n + \sum_{i=1}^n\sum_{j=1}^m \size(A(i,j))$
-\end{itemize}
+% In our description of the ellipsoid method, we did not explain yet what
+% the initial ellipsoid  is and when we can stop with asserting
+% that $P$ is either not full-dimensional or unbounded. 
 
 
+% Suppose therefore that $P = \{ x \in \setR^n \mid Ax\leq b\}$ is
+% full-dimensional and bounded with $A\in \setZ^{m\times n}$ and $b\in \setZ^m$. Let
+% $B$ be the largest absolute value of a component of $A$ and $b$. In this 
+% section we will show the following things.  
+% \begin{enumerate}[i)]
+% \item The vertices of $P$ are in the box 
+% $\{x \in \setR^n \mid -n^{n/2} B^n \leq x_i \leq n^{n/2} B^n$ 
+% $\forall 1 \leq i \leq n \}$. 
+% Thus $P$ is contained in the ball around $0$
+%   with radius $n^{n} B^n$ . Observe that the encoding length of this
+%   radius is $\size(n^{n}B^n) = O(n \log n + n\size(B))$ which is
+%   polynomial in the dimension $n$ and the largest encoding length of a
+%   coefficient of $A$ and $b$. \label{el:item:7}
+% \item The volume of $P$ is bounded from below by  $1 /
+% (n\cdot B)^{3n^2}$. \label{el:item:8}
+% \end{enumerate}
 
-We recall the Hadamard inequality which states that for $A \in
-\setR^{n\times n}$ one has 
-\begin{equation}
-  \label{el:eq:10}
-  |\det(A)| \leq \prod_{i=1}^n \|a_i\|,
-\end{equation}
-where $a_i$ denotes the $i^{th}$ column of $A$.  In particular, if $B$
-is the largest absolute value of an entry in $A$, then 
-\begin{equation}
-  \label{el:eq:11}
-  |\det(A)| \leq n^{n/2} B^{n}. 
-\end{equation}
+% The following lemma is proved in any linear algebra course. 
+% \begin{lemma}[Inverse formula and Cramer's rule]
+%   \label{el:lem:11}
+%   Let $C \in \setR^{n\times n}$ be a nonsingular matrix. Then 
+%   \begin{displaymath}
+%     C^{-1}(j,i) = (-1)^{i+j} \det(C_{ij}) / \det(C),
+%   \end{displaymath}
+%   where $C_{ij}$ is the matrix arising from $C$ by the deletion of the
+%   $i^{th}$ row and $j^{th}$ column. If $d\in \setR^n$ is a vector 
+%   then the $j^{th}$ component of $C^{-1}d$ is given by
+%   $\det(\wt{C})/\det(C)$, where $\wt{C}$ arises from $C$ be 
+%   replacing the $j^{th}$ column with $d$. 
+%  \end{lemma}
 
-
-%\begin{exercise}[Computing the determinant with modular arithmetic]
-%  \label{el:ex:9}
-%  In this exercise we show how to compute the determinant of a matrix
-%  $A \in \setZ{n\times n}$ in polynomial time. We are all aware of the fact that
-%  Gaussian elimination performs $O(n^3)$ 
-%  \emph{arithmetic operations} to compute an upper triangular matrix
-%  $R \in \setQ^{n\times n}$ from $A$ such that $\det(R) = \det(A)$ and $\det(A)
-%  = \prod_{i=1}^n r(i,i,)$. But could the number of \emph{bits} which are
-%  necessary to represent the intermediate steps in Gaussian
-%  elimination explode~? We do not want to answer this question in this
-%  exercise. Instead we circumvent it by using the Hadamard
-%  inequality.   
-%\end{exercise}
-
-Now let us inspect the vertices of a polyhedron $P = \{ x \in \setR^n \mid
-Ax\leq b\}$, where $A$ and $b$ are integral and the largest absolute
-value of any entry in $A$ and $b$ is bounded by $B$. A vertex is
-determined as the unique solution of a linear system $A'x=b'$, where
-$A'x\leq b'$ is a subsystem of $Ax\leq b$ and $A'$ is invertible. Using
-Cramer's rule and our observation~\eqref{el:eq:11} we see that the
-vertices of $P$ lie in the box $\{x \in \setR^n \mid -n^{n/2} B^n \leq x_i \leq n^{n/2} B^n,$ $i = 1,\cdots,n\}$.  This
-shows~\ref{el:item:7}).
-
-
-Now let us consider a lower bound on the volume of $P$. Since $P$ is
-full-dimensional, there exist $n+1$ affinely independent vertices
-$v_0,\ldots,v_n$ of $P$ which span a \emph{simplex} in $\setR^{n}$ 
-(i.e. the $n$-dimensional polytope equivalent to the convex-hull of 
-these $n+1$ vertices). The
-volume of this simplex is determined by the formula
-\begin{equation}
-  \label{el:eq:24}
-  \frac{1}{n!} \cdot \left|\det \mat{1 & \cdots & 1 \\ v_0& \ldots&v_n} \right|. 
-\end{equation}
-%
-By Cramer's rule and the Hadamard inequality, the common  denominator
-of each component of $v_i$ can be  bounded by $n^{n/2} B^n$. Thus
-\eqref{el:eq:24} is bounded by 
-\begin{equation}
-  \label{el:eq:44}
-  1 / \left(   n^n (n^{\frac{n}{2}} \cdot B^n)^{n+1}      \right) \geq  1 /
-  \left(   n^{3n^2}   B^{2n^2}      \right) \geq 1 / (n\cdot B)^{3\cdot n^2},
-\end{equation}
-which shows \ref{el:item:8}). 
-
-
-Now we plug these values into our analysis in
-Theorem~\ref{el:thr:21}. Our initial volume $\vol(\eE_{init})$  is bounded by   the
-volume of the box with side-lengths $2 (n\cdot B)^n$. Thus
-\begin{equation}
-  \label{el:eq:27}
-  \vol(\eE_{init}) \leq(2\cdot n\cdot B)^{n^2}.  
-\end{equation}
-%
-Above we have shown that 
-\begin{equation}
-  \label{el:eq:38}
-  L \geq 1 / (n\cdot B)^{3n^2}. 
-\end{equation}
-Clearly 
-\begin{equation}
-  \label{el:eq:39}
-   \vol(\eE_{init}) / L  \leq 2^{n^2} \cdot (n \cdot B)^{4 \cdot n^2} 
-   \leq (2n \cdot B)^{4\cdot n^2}. 
-\end{equation}
-%
-By Theorem~\ref{el:thr:21} the ellipsoid method performs 
-\begin{equation}
-  \label{el:eq:40}
-  O\left(2\cdot n \cdot \ln \left((2n \cdot B)^{4\cdot n^2}\right) \right)
-\end{equation}
-iterations. This is bounded by 
-\begin{equation}
-  \label{el:eq:41}
-  O(n^3 \cdot \ln (n \cdot B)).
-\end{equation}
-Now recall that $\log B$ is the number of \emph{bits}  which are
-needed to encode the coefficient with the largest absolute value of
-the constraint system $Ax\leq b$ and that $n$ is the number of variables
-of this system. Therefore the expression~\eqref{el:eq:41} is polynomial
-in the binary input encoding of the system $Ax\leq b$. We conclude the
-following theorem. 
-
-\begin{theorem}
-  \label{el:thr:23}
-  The ellipsoid method (exact version)  performs a polynomial number
-  of iterations.  
-\end{theorem}
+% We now define the size of a rational number $r = p/q$ with $p$ and $q$
+% relatively prime integers, a vector $c \in \setQ^n$ and a matrix $A \in
+% \setQ^{m\times n}$: 
+% \begin{itemize}
+% \item $\size(r) = 1 + \lceil\log ( |p|+1) \rceil + \lceil \log( |q|+1) \rceil$
+% \item $\size(c) = n+ \sum_{i=1}^n \size(c_i)$
+% \item $\size(A) = m\cdot n + \sum_{i=1}^n\sum_{j=1}^m \size(A(i,j))$
+% \end{itemize}
 
 
 
-
-\section{The boundedness and full-dimensionality condition}
-\label{el:sec:bound-full-dimens}
-
-
-
-In this section we want to show how the ellipsoid method can be used
-to solve the following problem. 
-\begin{quote}
-  Given a matrix $A \in \setZ^{m\times n}$ and a vector $b \in \setZ^m$, determine a
-  feasible point $x^*$ in the polyhedron $P = \{ x \in \setR^n \mid Ax\leq b\}$ or
-  assert that $P = \emptyset$. 
-\end{quote}
-%
-\subsection{Boundedness}
-\label{el:sec:boundedness}
-
-We have argued that the matrix $A \in \setZ^{m\times n}$ can be assumed to have
-full column rank. So, if $P$ is not empty, then $P$ does have at least
-one vertex. The vertices are contained in the box $\{x \in \setR^n \mid
--n^{n/2} B^n \leq x_i \leq n^{n/2} B^n,$ $i=1,\cdots,n\}$. Therefore, we can append the
-inequalities $-n^{n/2} B^n \leq x_i \leq n^{n/2} B^n$ 
-$(i=1,\cdots,n)$ to $Ax\leq b$ without
-changing the status of $P \neq \emptyset$ or $P = \emptyset$. Notice that the
-\emph{binary encoding length} of the new inequalities is polynomial in
-the binary encoding length of the old inequalities.
+% We recall the Hadamard inequality which states that for $A \in
+% \setR^{n\times n}$ one has 
+% \begin{equation}
+%   \label{el:eq:10}
+%   |\det(A)| \leq \prod_{i=1}^n \|a_i\|,
+% \end{equation}
+% where $a_i$ denotes the $i^{th}$ column of $A$.  In particular, if $B$
+% is the largest absolute value of an entry in $A$, then 
+% \begin{equation}
+%   \label{el:eq:11}
+%   |\det(A)| \leq n^{n/2} B^{n}. 
+% \end{equation}
 
 
-\subsection{Full-dimensionality}
-\label{el:sec:full-dimensionality}
+% %\begin{exercise}[Computing the determinant with modular arithmetic]
+% %  \label{el:ex:9}
+% %  In this exercise we show how to compute the determinant of a matrix
+% %  $A \in \setZ{n\times n}$ in polynomial time. We are all aware of the fact that
+% %  Gaussian elimination performs $O(n^3)$ 
+% %  \emph{arithmetic operations} to compute an upper triangular matrix
+% %  $R \in \setQ^{n\times n}$ from $A$ such that $\det(R) = \det(A)$ and $\det(A)
+% %  = \prod_{i=1}^n r(i,i,)$. But could the number of \emph{bits} which are
+% %  necessary to represent the intermediate steps in Gaussian
+% %  elimination explode~? We do not want to answer this question in this
+% %  exercise. Instead we circumvent it by using the Hadamard
+% %  inequality.   
+% %\end{exercise}
+
+% Now let us inspect the vertices of a polyhedron $P = \{ x \in \setR^n \mid
+% Ax\leq b\}$, where $A$ and $b$ are integral and the largest absolute
+% value of any entry in $A$ and $b$ is bounded by $B$. A vertex is
+% determined as the unique solution of a linear system $A'x=b'$, where
+% $A'x\leq b'$ is a subsystem of $Ax\leq b$ and $A'$ is invertible. Using
+% Cramer's rule and our observation~\eqref{el:eq:11} we see that the
+% vertices of $P$ lie in the box $\{x \in \setR^n \mid -n^{n/2} B^n \leq x_i \leq n^{n/2} B^n,$ $i = 1,\cdots,n\}$.  This
+% shows~\ref{el:item:7}).
 
 
-\begin{exercise}
-  \label{el:ex:11}
-  Let $P = \{ x \in \setR^n \mid Ax\leq b\}$ be a polyhedron and $\varepsilon>0$ be a
-  real number. Show that $P_\varepsilon = \{ x \in \setR^n \mid Ax\leq b+ \varepsilon\cdot
-  \mathbf{1}\}$ is full-dimensional if $P \neq \emptyset$.
-\end{exercise}
+% Now let us consider a lower bound on the volume of $P$. Since $P$ is
+% full-dimensional, there exist $n+1$ affinely independent vertices
+% $v_0,\ldots,v_n$ of $P$ which span a \emph{simplex} in $\setR^{n}$ 
+% (i.e. the $n$-dimensional polytope equivalent to the convex-hull of 
+% these $n+1$ vertices). The
+% volume of this simplex is determined by the formula
+% \begin{equation}
+%   \label{el:eq:24}
+%   \frac{1}{n!} \cdot \left|\det \mat{1 & \cdots & 1 \\ v_0& \ldots&v_n} \right|. 
+% \end{equation}
+% %
+% By Cramer's rule and the Hadamard inequality, the common  denominator
+% of each component of $v_i$ can be  bounded by $n^{n/2} B^n$. Thus
+% \eqref{el:eq:24} is bounded by 
+% \begin{equation}
+%   \label{el:eq:44}
+%   1 / \left(   n^n (n^{\frac{n}{2}} \cdot B^n)^{n+1}      \right) \geq  1 /
+%   \left(   n^{3n^2}   B^{2n^2}      \right) \geq 1 / (n\cdot B)^{3\cdot n^2},
+% \end{equation}
+% which shows \ref{el:item:8}). 
 
 
-The above exercise raises the following question.  Is there an $\varepsilon>0$
-such that $P_\varepsilon = \emptyset$ if and only if $P = \emptyset$ and furthermore is the
-binary encoding length of this $\varepsilon$ polynomial in the binary encoding
-length of $A$ and $b$? 
+% Now we plug these values into our analysis in
+% Theorem~\ref{el:thr:21}. Our initial volume $\vol(\eE_{init})$  is bounded by   the
+% volume of the box with side-lengths $2 (n\cdot B)^n$. Thus
+% \begin{equation}
+%   \label{el:eq:27}
+%   \vol(\eE_{init}) \leq(2\cdot n\cdot B)^{n^2}.  
+% \end{equation}
+% %
+% Above we have shown that 
+% \begin{equation}
+%   \label{el:eq:38}
+%   L \geq 1 / (n\cdot B)^{3n^2}. 
+% \end{equation}
+% Clearly 
+% \begin{equation}
+%   \label{el:eq:39}
+%    \vol(\eE_{init}) / L  \leq 2^{n^2} \cdot (n \cdot B)^{4 \cdot n^2} 
+%    \leq (2n \cdot B)^{4\cdot n^2}. 
+% \end{equation}
+% %
+% By Theorem~\ref{el:thr:21} the ellipsoid method performs 
+% \begin{equation}
+%   \label{el:eq:40}
+%   O\left(2\cdot n \cdot \ln \left((2n \cdot B)^{4\cdot n^2}\right) \right)
+% \end{equation}
+% iterations. This is bounded by 
+% \begin{equation}
+%   \label{el:eq:41}
+%   O(n^3 \cdot \ln (n \cdot B)).
+% \end{equation}
+% Now recall that $\log B$ is the number of \emph{bits}  which are
+% needed to encode the coefficient with the largest absolute value of
+% the constraint system $Ax\leq b$ and that $n$ is the number of variables
+% of this system. Therefore the expression~\eqref{el:eq:41} is polynomial
+% in the binary input encoding of the system $Ax\leq b$. We conclude the
+% following theorem. 
 
-Here we have a third version of Farkas' Lemma (we saw the firt one 
-in Theorem~\ref{conv:thr:12} and the second one in 
-Exercise~\ref{conv:ex:10} of chapter~\ref{conv:cha:convex-sets} and 
-in Theorem~\ref{dual:thr:2farkas}).
-\begin{theorem}
-  \label{el:thr:24}
-  The system $Ax\leq b$ does not have a solution if and only if there
-  exists a nonnegative vector $\lambda \in \setR^m_{\geq0}$ such that $\lambda^TA = 0$
-  and $\lambda^Tb=-1$. 
-\end{theorem}
+% \begin{theorem}
+%   \label{el:thr:23}
+%   The ellipsoid method (exact version)  performs a polynomial number
+%   of iterations.  
+% \end{theorem}
 
 
-Let $A\in \setZ^{m\times n}$ and $b\in \setZ^m$ and let $B$ be the largest absolute
-value of a coefficient of $A$ and $b$.  If $Ax\leq b$ is not feasible,
-then there exists a $\lambda\geq0$ such that $\lambda^T(A|b) = (\mathbf{0}|-1)$. We
-want to estimate the largest absolute value of a coefficient of $\lambda$
-with Cramer's rule and the Hadamard inequality.  We can choose $\lambda$
-such that the  nonzero
-coefficients of $\lambda$ are the unique solution of a system of equations
-$Cx=d$, where each coefficient has absolute value at most $B$. By
-Cramer's rule and the Hadamard inequality we can thus  choose $\lambda$
-such that $|\lambda(i)| \leq (n\cdot B)^n$.  Now let $\varepsilon = 1 / \left((n+1) \cdot (n \cdot
-  B)^n \right) $. Then $|\lambda^T \mathbf{1} \cdot \varepsilon |<1$ and thus 
-\begin{equation}
-  \label{el:eq:42}
-  \lambda^T (b+ \varepsilon \cdot \mathbf{1}) <0. 
-\end{equation}
-%
-Consequently the system $Ax\leq b+\varepsilon \cdot \mathbf{1}$ 
-is infeasible if and only
-if $Ax\leq b$ is infeasible.  Notice again that the encoding length of
-$\varepsilon$ is polynomial in the encoding length of $Ax\leq b$ and we conclude
-with the main theorem of this section. 
 
-\begin{theorem}
-  \label{el:thr:25}
-  The ellipsoid method can be used to decide whether a system of
-  inequalities $Ax\leq b$ contains a feasible point, where $A\in\setZ^{m\times n}$
-  and $b\in \setZ^m$. The number of iterations is bounded by a polynomial
-  in $n$ and $\log B$, where $B$ is the largest absolute value of a
-  coefficient of $A$ and $b$.
-\end{theorem}
+
+% \section{The boundedness and full-dimensionality condition}
+% \label{el:sec:bound-full-dimens}
+
+
+
+% In this section we want to show how the ellipsoid method can be used
+% to solve the following problem. 
+% \begin{quote}
+%   Given a matrix $A \in \setZ^{m\times n}$ and a vector $b \in \setZ^m$, determine a
+%   feasible point $x^*$ in the polyhedron $P = \{ x \in \setR^n \mid Ax\leq b\}$ or
+%   assert that $P = \emptyset$. 
+% \end{quote}
+% %
+% \subsection{Boundedness}
+% \label{el:sec:boundedness}
+
+% We have argued that the matrix $A \in \setZ^{m\times n}$ can be assumed to have
+% full column rank. So, if $P$ is not empty, then $P$ does have at least
+% one vertex. The vertices are contained in the box $\{x \in \setR^n \mid
+% -n^{n/2} B^n \leq x_i \leq n^{n/2} B^n,$ $i=1,\cdots,n\}$. Therefore, we can append the
+% inequalities $-n^{n/2} B^n \leq x_i \leq n^{n/2} B^n$ 
+% $(i=1,\cdots,n)$ to $Ax\leq b$ without
+% changing the status of $P \neq \emptyset$ or $P = \emptyset$. Notice that the
+% \emph{binary encoding length} of the new inequalities is polynomial in
+% the binary encoding length of the old inequalities.
+
+
+
+% \begin{theorem}
+%   \label{el:thr:25}
+%   The ellipsoid method can be used to decide whether a system of
+%   inequalities $Ax\leq b$ contains a feasible point, where $A\in\setZ^{m\times n}$
+%   and $b\in \setZ^m$. The number of iterations is bounded by a polynomial
+%   in $n$ and $\log B$, where $B$ is the largest absolute value of a
+%   coefficient of $A$ and $b$.
+% \end{theorem}
 
 \section{The ellipsoid method for optimization}
 \label{el:sec:ellips-meth-optim}
